@@ -1,0 +1,20 @@
+version: '3.9'
+name: "analyzer-dev"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+      target: dev
+    env_file:
+    - ../.env
+    ports:
+      # Exposes application port.
+    - "8004:8004"
+    volumes:
+      # Adds current directory as volume.
+    - ../:/app/analyzer/
+    environment:
+      # Enables autoreload.
+      ANALYZER_RELOAD: "True"

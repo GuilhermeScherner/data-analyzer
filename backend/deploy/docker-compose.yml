@@ -1,0 +1,41 @@
+version: '3.9'
+name: "analyzer"
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+      target: prod
+    image: analyzer:${ANALYZER_VERSION:-latest}
+    restart: always
+    env_file:
+    - ../.env
+    labels:
+      # Enables traefik for this container.
+    - traefik.enable=true
+    - traefik.http.routers.analyzer.rule=Host(`${ANALYZER_TRAEFIK_HOST:-analyzer.localhost}`)
+    - traefik.http.routers.analyzer.entrypoints=http
+    - traefik.http.routers.analyzer.service=analyzer
+    - traefik.http.services.analyzer.loadbalancer.server.port=${ANALYZER_PORT:-8000}
+    networks:
+    - default
+    - traefik-shared
+    environment:
+      ANALYZER_HOST: 0.0.0.0
+
+  dynamodb:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb
+    ports:
+    - "8080:8080"
+    volumes:
+    - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+
+
+networks:
+  # Network for traefik.
+  traefik-shared:
+    name: traefik-shared
