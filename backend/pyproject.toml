@@ -12,8 +12,12 @@ fastapi = "^0.109.0"
 python-dotenv = "^1.0.0"
 uvicorn = "^0.26.0"
 pydantic-settings = {extras = ["dotenv"], version = "^2.1.0"}
-celery = {extras = ["librabbitmq"], version = "^5.3.6"}
 sqlalchemy = "^2.0.25"
+alembic = "^1.13.1"
+python-multipart = "^0.0.6"
+ujson = "^5.9.0"
+pandas = "^2.2.0"
+python-dateutil = "^2.8.2"
 
 [tool.poetry.dev-dependencies]
 black = { extras = ["d"], version = "^22.12.0" }
@@ -21,7 +25,6 @@ pytest = "^7.4.4"
 autoflake = "^1.6.1"
 mypy = "^1.1.1"
 isort = "^5.11.4"
-pre-commit = "^2.20.0"
 pytest-mock = "^3.12.0"
 httpx = "^0.26.0"
 
@@ -37,11 +40,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88
-extend-exclude = "analyzer/db/migrations"
+extend-exclude = "db/migrations"
 
 [tool.isort]
 profile = "black"
-extend_skip = ["analyzer", "db", "migrations"]
+extend_skip = ["db", "migrations"]
 src_paths = ["analyzer", "tests"]
 combine_as_imports = true
 
@@ -57,4 +60,4 @@ allow_untyped_decorators = true
 warn_unused_ignores = false
 warn_return_any = false
 namespace_packages = true
-exclude = ["backend/analyzer/db/migrations"]
+exclude = ["analyzer/db/migrations"]

@@ -1,5 +1,5 @@
 import logging
-from typing import Awaitable, Callable, Optional
+from typing import Awaitable, Callable
 
 from fastapi import FastAPI
 
@@ -20,8 +20,9 @@ def register_startup_event(
     """
 
     @app.on_event("startup")
-    async def _startup() -> None:
-        pass
+    async def _startup() -> None:  # noqa: WPS430
+        pass  # noqa: WPS420
+
     return _startup
 
 

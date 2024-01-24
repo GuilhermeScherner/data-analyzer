@@ -4,7 +4,6 @@ from fastapi import FastAPI
 from fastapi.responses import UJSONResponse
 from starlette.middleware.cors import CORSMiddleware
 
-from analyzer.api.exceptions_handlers import add_exception_handlers
 from analyzer.api.lifetime import register_shutdown_event, register_startup_event
 from analyzer.api.routers import api_router
 from analyzer.settings import settings
@@ -41,7 +40,5 @@ def get_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    # Adds exception handlers.
-    add_exception_handlers(app)
 
     return app

@@ -1,37 +1,47 @@
 from __future__ import annotations
 
 from functools import cached_property
+from types import TracebackType
+from typing import Optional, Type
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from analyzer.db.repositories.analyzer import AnalyzerRepository
+from sqlalchemy.orm import Session
+
+from analyzer.db.repositories.file import FileRepository
 
 
 class RepositoryFactory:
     """Factory for creating repositories."""
 
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: Session) -> None:
         self.session = session
 
-    async def __aenter__(self) -> RepositoryFactory:
+    def __enter__(self) -> RepositoryFactory:
         return self
 
-    async def __aexit__(self, exc_type, exc_value, exc_traceback):
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_val: Optional[BaseException],
+        exc_tb: Optional[TracebackType],
+    ) -> None:
         if exc_type:
-            await self.rollback()
+            self.rollback()
         else:
-            await self.commit()
+            self.commit()
 
-    async def commit(self) -> None:
-        await self.session.commit()
+    def commit(self) -> None:
+        """Commit session."""
+        self.session.commit()
 
-    async def rollback(self) -> None:
-        await self.session.rollback()
+    def rollback(self) -> None:
+        """Rollback session."""
+        self.session.rollback()
 
     @cached_property
-    def analyzer(self) -> AnalyzerRepository:
+    def file(self) -> FileRepository:
         """
-        Analyzer repository.
+        File repository.
 
-        :return: analyzer repository.
+        :return: file repository.
         """
-        return AnalyzerRepository(self.session)
+        return FileRepository(self.session)

@@ -7,4 +7,4 @@ class Base(BaseModel):
     class Config:
         """Config for base class."""
 
-        orm_mode = True
+        from_attributes = True

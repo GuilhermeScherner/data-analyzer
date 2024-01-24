@@ -4,11 +4,11 @@ name: "analyzer-dev"
 services:
   api:
     build:
-      context: ..
+      context: .
       dockerfile: ./Dockerfile
       target: dev
     env_file:
-    - ../.env
+    - ./.env
     ports:
       # Exposes application port.
     - "8004:8004"
