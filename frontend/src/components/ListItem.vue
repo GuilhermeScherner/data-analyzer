@@ -1,23 +1,27 @@
 <script setup lang="ts">
+import { format } from 'date-fns'
 defineProps<{
-  date: string,
-  heading: string,
+  date: string
+  name: string
 }>()
 </script>
 
 <template>
   <div class="item">
     <i>
-      <slot name="icon"></slot>
+      {{ format(date, 'dd-MM-yy HH:mm') }}
+      <br />
+      <slot name="icon">{{ name }}</slot>
     </i>
   </div>
 </template>
 
 <style scoped>
 .item {
-  margin-top: 2rem;
+  margin-top: 0.5rem;
   display: flex;
   position: relative;
+  cursor: pointer;
 }
 
 i {
@@ -41,8 +45,9 @@ h3 {
 
 @media (min-width: 1024px) {
   .item {
-    margin-top: 0;
+    margin-top: 0.5rem;
     margin-left: 1rem;
+    cursor: pointer;
   }
 
   i {
@@ -52,6 +57,5 @@ h3 {
     width: 100%;
     height: 70px;
   }
-
 }
 </style>

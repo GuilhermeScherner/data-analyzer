@@ -1,19 +1,18 @@
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { GetAnalyticsResponse } from '@/services/interfaces'
+import type { GetListAnalyticsResponse } from '@/services/interfaces'
 import { ApiService } from '@/services'
 
 export const useAnalytics = defineStore('analytics', () => {
-  const data = ref(null)
-
+  const data: Ref<GetListAnalyticsResponse[] | any[]> = ref([])
   const apiSetup = ApiService.setup()
-
-  onMounted(() => {
-    apiSetup.getList().then((res) => {
-      data.value = res.data
-    })
+  onMounted(async () => {
+    updateData()
   })
-
-  return { data }
+  async function updateData() {
+    const result = await apiSetup.getList()
+    data.value = result.data
+  }
+  return { data, updateData }
 })
