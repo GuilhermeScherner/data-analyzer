@@ -29,7 +29,7 @@ async def create_upload_file(
 
 
 @router.get(
-    "get-analyzer/{id}",
+    "/{id}",
     name="get_analyzer",
     response_model=analyzer_models.AnalyzerGetResponse,
 )
@@ -48,13 +48,13 @@ async def get_analyzer(
 
 
 @router.get(
-    "get-analyzer-list/",
+    "/",
     name="get_analyzer_list",
-    response_model=List[analyzer_models.AnalyzerGetResponse],
+    response_model=List[analyzer_models.AnalyzerListGetResponse],
 )
 async def get_analyzer_list(
     service: AnalyzerService = Depends(analyzer_service_dependency),
-) -> List[analyzer_models.AnalyzerGetResponse]:
+) -> List[analyzer_models.AnalyzerListGetResponse]:
     """
     Get analyzer list.
 

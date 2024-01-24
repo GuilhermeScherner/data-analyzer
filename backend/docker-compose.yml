@@ -6,15 +6,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-      target: dev
     env_file:
     - ./.env
     ports:
-      # Exposes application port.
-    - "8004:8004"
-    volumes:
-      # Adds current directory as volume.
-    - ../:/app/analyzer/
-    environment:
-      # Enables autoreload.
-      ANALYZER_RELOAD: "True"
+    - "8000:8000"

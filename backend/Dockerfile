@@ -1,24 +1,21 @@
 FROM python:3.11.3-slim-buster as prod
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV PORT=8000
 
+EXPOSE $PORT
 
-RUN pip install poetry==1.4.2
+RUN pip install poetry==1.7.1
 
-# Configuring poetry
 RUN poetry config virtualenvs.create false
+WORKDIR /app
 
-# Copying requirements of a project
-COPY pyproject.toml poetry.lock /app/analyzer/
-WORKDIR /app/analyzer
+COPY pyproject.toml poetry.lock ./
 
-# Installing requirements
-RUN poetry install --only main
+RUN poetry install --no-dev
 
-# Copying actuall application
-COPY . /app/analyzer/
-RUN poetry install --only main
+COPY ./analyzer/ ./analyzer/
+COPY ./alembic.ini ./
 
-CMD ["/usr/local/bin/python", "-m", "analyzer"]
-
-FROM prod as dev
-
-RUN poetry install
+# Command to run the application
+CMD ["poetry", "run", "python", "-m", "analyzer"]

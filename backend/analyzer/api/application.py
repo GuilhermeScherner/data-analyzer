@@ -19,7 +19,6 @@ def get_app() -> FastAPI:
     """
     app = FastAPI(
         title="analyzer",
-        version=metadata.version("analyzer"),
         docs_url="/analyzer/docs",
         redoc_url="/analyzer/redoc",
         openapi_url="/analyzer/openapi.json",

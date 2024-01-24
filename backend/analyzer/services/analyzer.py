@@ -48,6 +48,8 @@ class AnalyzerService(BaseService):
         """
         with self.uow as uow:
             file = uow.file.get(id)
+            if(file is None):
+                return None
             file_json = file.to_dict()
             file_json["mrr"] = json.loads(file_json["mrr"])
             file_json["churn"] = json.loads(file_json["churn"])
@@ -55,7 +57,7 @@ class AnalyzerService(BaseService):
 
     async def get_analyzer_list_service(
         self,
-    ) -> List[analyzer_models.AnalyzerGetResponse]:
+    ) -> List[analyzer_models.AnalyzerListGetResponse]:
         """
         Get analyzer list.
 
@@ -63,11 +65,7 @@ class AnalyzerService(BaseService):
         """
         with self.uow as uow:
             files = uow.file.get_all()
-            files = [file.to_dict() for file in files]
-            for file in files:
-                file["mrr"] = json.loads(file["mrr"])
-                file["churn"] = json.loads(file["churn"])
-        return [analyzer_models.AnalyzerGetResponse(**file) for file in files]
+        return [analyzer_models.AnalyzerListGetResponse(**file.to_dict()) for file in files]
 
     def _create_mrr(self, df: pd.DataFrame) -> Dict[str, Any]:
         """

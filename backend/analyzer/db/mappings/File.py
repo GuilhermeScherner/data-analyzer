@@ -20,4 +20,5 @@ class File(BaseMapping):
             "name": self.name,
             "mrr": self.mrr,
             "churn": self.churn,
+            "date": self.created_at,
         }
